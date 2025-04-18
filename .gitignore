@@ -8,7 +8,9 @@
 /.bundle
 
 # Ignore all environment files.
-/.env*
+/env*
+.env
+.env.*
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -32,3 +34,20 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials/*.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep
+
+# Other common ignores
+*.log
+/tmp
+/log
+.DS_Store
+
+# Ignore node_modules
+/node_modules
+/yarn-error.log
+
+# Ignore Python virtual environment
+/venv

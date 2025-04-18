@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html class="bg-[#222222] m-0 p-0 min-h-screen">
   <head>
-    <title><%= content_for(:title) || "Ai Ppt Generator" %></title>
+    <title><%= content_for(:title) || "PPT Generator by Dean" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -20,9 +20,20 @@
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
+    <style>
+      body, html {
+        margin: 0;
+        padding: 0;
+        background-color: #222222;
+        min-height: 100vh;
+        width: 100%;
+        overflow-x: hidden;
+      }
+    </style>
   </head>
 
-  <body>
+  <body class="bg-[#222222] m-0 p-0 min-h-screen w-full">
     <%= yield %>
   </body>
 </html>

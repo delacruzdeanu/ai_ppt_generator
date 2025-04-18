@@ -1,0 +1,164 @@
+<!-- Right Sidebar - Properties -->
+<div class="w-full lg:w-72 bg-[#333333] p-4 border-l border-gray-700">
+  <div class="space-y-4">
+    <h3 class="text-white font-medium">Generate Presentation</h3>
+    
+    <div>
+      <label class="block text-gray-400 text-sm mb-2">Topic/Title</label>
+      <input 
+        type="text"
+        id="presentation-title"
+        class="w-full bg-[#2A2A2A] border border-gray-700 rounded-lg p-3 text-white focus:border-[#FF006E] focus:ring-1 focus:ring-[#FF006E] outline-none"
+        placeholder="E.g., Digital Marketing Strategy"
+      />
+    </div>
+
+    <div>
+      <label class="block text-gray-400 text-sm mb-2">Content Details</label>
+      <textarea 
+        id="presentation-content"
+        class="w-full bg-[#2A2A2A] border border-gray-700 rounded-lg p-3 text-white resize-none focus:border-[#FF006E] focus:ring-1 focus:ring-[#FF006E] outline-none"
+        rows="4"
+        placeholder="Key points to include in the presentation..."
+      ></textarea>
+    </div>
+
+    <div>
+      <label class="block text-gray-400 text-sm mb-2">Presentation Style</label>
+      <select 
+        id="presentation-style"
+        class="w-full bg-[#2A2A2A] border border-gray-700 rounded-lg p-3 text-white focus:border-[#FF006E] focus:ring-1 focus:ring-[#FF006E] outline-none">
+        <option>Business Professional</option>
+        <option>Creative & Modern</option>
+        <option>Academic</option>
+        <option>Minimalist</option>
+        <option>Bold & Vibrant</option>
+      </select>
+    </div>
+
+    <div>
+      <label class="block text-gray-400 text-sm mb-2">Number of Slides</label>
+      <div class="flex items-center space-x-2">
+        <input 
+          type="range" 
+          min="1" 
+          max="15" 
+          value="10"
+          id="slides-count-slider"
+          class="w-full accent-[#FF006E]"
+          oninput="updateSlidesCount(this.value)"
+        />
+        <span id="slides-count-display" class="text-white">10</span>
+      </div>
+    </div>
+
+    <button 
+      id="generate-slides-btn" 
+      class="w-full bg-gradient-to-r from-[#FF006E] to-[#8338EC] text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity">
+      Generate Slides
+    </button>
+  </div>
+</div>
+
+<%= render 'shared/confirm_modal' %>
+
+<script>
+  // Initialize the slides count display on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const slider = document.getElementById('slides-count-slider');
+    const display = document.getElementById('slides-count-display');
+    display.textContent = slider.value;
+    
+    // Set up the generate button click handler
+    document.getElementById('generate-slides-btn').addEventListener('click', function() {
+      // Get form values
+      const title = document.getElementById('presentation-title').value;
+      const content = document.getElementById('presentation-content').value;
+      const style = document.getElementById('presentation-style').value;
+      const slides = document.getElementById('slides-count-slider').value;
+      
+      // Update confirmation modal
+      document.getElementById('confirm-title').textContent = title || 'Not specified';
+      document.getElementById('confirm-content').textContent = content || 'Not specified';
+      document.getElementById('confirm-style').textContent = style;
+      document.getElementById('confirm-slides').textContent = slides;
+      
+      // Show modal
+      document.getElementById('confirm-modal').classList.remove('hidden');
+    });
+    
+    // Cancel button
+    document.getElementById('cancel-generation').addEventListener('click', function() {
+      document.getElementById('confirm-modal').classList.add('hidden');
+    });
+    
+    // Confirm button
+    document.getElementById('confirm-generation').addEventListener('click', function() {
+      // Show loading state
+      document.getElementById('confirm-generation').textContent = 'Generating...';
+      document.getElementById('confirm-generation').disabled = true;
+      
+      // Get form data
+      const formData = new FormData();
+      formData.append('title', document.getElementById('presentation-title').value);
+      formData.append('content', document.getElementById('presentation-content').value);
+      formData.append('style', document.getElementById('presentation-style').value);
+      formData.append('slides', document.getElementById('slides-count-slider').value);
+      
+      // Send to server
+      fetch('/presentations', {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        },
+        body: formData
+      })
+      .then(response => {
+        if (!response.ok) {
+          // Read error message from JSON response when possible
+          return response.json()
+            .then(data => { 
+              console.error('Server error details:', data);
+              throw new Error(data.error || 'Server error'); 
+            })
+            .catch(jsonError => {
+              if (jsonError instanceof SyntaxError) {
+                // If JSON parsing fails, use status text
+                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+              }
+              throw jsonError;
+            });
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        // Create a download link for the presentation
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = document.getElementById('presentation-title').value + '.pptx' || 'presentation.pptx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        
+        // Hide modal and reset state
+        document.getElementById('confirm-modal').classList.add('hidden');
+        document.getElementById('confirm-generation').textContent = 'Generate';
+        document.getElementById('confirm-generation').disabled = false;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert(`Error: ${error.message || 'Failed to generate presentation. Please try again.'}`);
+        document.getElementById('confirm-generation').textContent = 'Generate';
+        document.getElementById('confirm-generation').disabled = false;
+        document.getElementById('confirm-modal').classList.add('hidden');
+      });
+    });
+  });
+
+  // Update the display when slider changes
+  function updateSlidesCount(value) {
+    document.getElementById('slides-count-display').textContent = value;
+  }
+</script>

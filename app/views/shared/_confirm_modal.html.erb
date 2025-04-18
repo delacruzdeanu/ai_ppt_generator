@@ -1,0 +1,38 @@
+<div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+  <div class="bg-[#333333] rounded-xl shadow-2xl p-6 max-w-md w-full mx-4">
+    <h3 class="text-white text-xl font-semibold mb-4">Confirm Presentation Generation</h3>
+    
+    <div class="space-y-3 mb-6">
+      <div>
+        <p class="text-gray-400 text-sm">Topic/Title:</p>
+        <p id="confirm-title" class="text-white"></p>
+      </div>
+      
+      <div>
+        <p class="text-gray-400 text-sm">Content Details:</p>
+        <p id="confirm-content" class="text-white text-sm"></p>
+      </div>
+      
+      <div class="flex gap-8">
+        <div>
+          <p class="text-gray-400 text-sm">Style:</p>
+          <p id="confirm-style" class="text-white"></p>
+        </div>
+        
+        <div>
+          <p class="text-gray-400 text-sm">Slides:</p>
+          <p id="confirm-slides" class="text-white"></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="flex space-x-4">
+      <button id="cancel-generation" class="flex-1 bg-gray-700 text-white py-3 rounded-lg font-medium hover:bg-gray-600 transition-colors">
+        Cancel
+      </button>
+      <button id="confirm-generation" class="flex-1 bg-gradient-to-r from-[#FF006E] to-[#8338EC] text-white py-3 rounded-lg font-medium hover:opacity-90 transition-opacity">
+        Generate
+      </button>
+    </div>
+  </div>
+</div>
