@@ -302,7 +302,7 @@ GEM
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
-    ruby-openai (6.5.0)
+    ruby-openai (8.1.0)
       event_stream_parser (>= 0.3.0, < 2.0.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
@@ -409,7 +409,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   rubocop-rails-omakase
   ruby-anthropic (~> 0.4.2)
-  ruby-openai (~> 6.0)
+  ruby-openai (~> 8.1)
   selenium-webdriver
   solid_cable
   solid_cache
