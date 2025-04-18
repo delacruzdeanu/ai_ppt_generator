@@ -21,6 +21,7 @@ An application that uses AI to automatically generate professional PowerPoint pr
 ### Setup
 
 1. Clone this repository
+2. Install Dependecies
 
 # Design Guidelines
 
