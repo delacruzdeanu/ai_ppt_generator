@@ -4,46 +4,27 @@
 # belong in git's global ignore instead:
 # `$XDG_CONFIG_HOME/git/ignore` or `~/.config/git/ignore`
 
-# Ignore bundler config.
-/.bundle
-
-# Ignore all environment files.
-/env*
+# Ignore environment files with sensitive API keys
 .env
 .env.*
 
-# Ignore all logfiles and tempfiles.
+# Rails specific ignores
+/.bundle
 /log/*
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
-# Ignore pidfiles, but keep the directory.
 /tmp/pids/*
-!/tmp/pids/
 !/tmp/pids/.keep
-
-# Ignore storage (uploaded files in development and any SQLite databases).
 /storage/*
 !/storage/.keep
-/tmp/storage/*
-!/tmp/storage/
-!/tmp/storage/.keep
 
-/public/assets
-
-# Ignore master key for decrypting credentials and more.
+# Ignore master key for decrypting credentials
 /config/master.key
 /config/credentials/*.key
 
-/app/assets/builds/*
-!/app/assets/builds/.keep
-
-# Other common ignores
-*.log
-/tmp
-/log
-.DS_Store
+# Ignore compiled assets
+/public/assets
 
 # Ignore node_modules
 /node_modules
@@ -51,3 +32,6 @@
 
 # Ignore Python virtual environment
 /venv
+
+# Generated files
+.DS_Store
